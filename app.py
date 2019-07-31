@@ -30,13 +30,24 @@ def signup():
     return home()
 
 
-@app.route('/logged-in')
+@app.route('/logged-in', methods=['POST',"GET"])
 def logged_in():
-    return render_template('logged.html')
+    
+    if request.method == "POST":
+        try:        
+
+            fav_food = request.form['fav_food']
+            add_food(login_session['name'], fav_food)
+            return render_template('logged.html',fav_food=fav_food)
+        except KeyError:
+            return render_template('logged.html', get_user())
+    else:
+        return render_template('logged.html'
 
 
 @app.route('/logout')
 def logout():
+    login_session.clear()
     return home()
 
 
